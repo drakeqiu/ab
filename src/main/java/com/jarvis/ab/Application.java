@@ -5,7 +5,8 @@ package com.jarvis.ab;
  */
 public class Application {
     public static void main(String[] args) {
-        Server.getINSTANCE().start();
-
+        Server server = Server.getINSTANCE();
+        server.initialize();
+        server.start();
     }
 }

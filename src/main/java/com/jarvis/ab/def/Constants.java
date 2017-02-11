@@ -6,5 +6,6 @@ package com.jarvis.ab.def;
 public class Constants {
     public static final String PROMPT = "ab>";
 
+    public static final String HELPCOMMAND = "!help";
     private Constants(){}
 }
