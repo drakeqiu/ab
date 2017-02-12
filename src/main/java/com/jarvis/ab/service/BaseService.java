@@ -11,4 +11,7 @@ public interface BaseService<T> {
 
     public void add(T t);
     public void delete(String condition);
+
+    public void save();
+    public void load();
 }
