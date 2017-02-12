@@ -2,12 +2,13 @@ package com.jarvis.ab.service;
 
 import com.jarvis.ab.entity.Address;
 import com.jarvis.ab.persistent.AddressBookStoreService;
+import org.apache.commons.beanutils.BeanUtils;
 
-import java.util.ArrayList;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * Created by jarvis on 11/02/2017.
@@ -22,60 +23,54 @@ public class AddressService implements BaseService<Address>{
         this.addressBookStoreService = addressBookStoreService;
     }
 
-    public List<Address> search(String condition) {
-        return null;
-    }
-
-    private List<Address> searchByName(String name) {
-        return null;
-    }
-
-    private List<Address> searchByMobile(String mobile) {
-        return null;
-    }
-
-    private List<Address> searchByAddress(String address) {
-        return null;
+    public List<Address> search(String condition, String value) {
+        Iterator<Address> addressIterator = this.addresses.iterator();
+        List<Address> resAddresses = new LinkedList<Address>();
+        while (addressIterator.hasNext()) {
+            String reg = value;
+            try {
+                Address resAddress = addressIterator.next();
+                String propertyVal = BeanUtils.getProperty(resAddress, condition);
+                if (propertyVal.matches(value)) {
+                    resAddresses.add(resAddress);
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            }
+        }
+        return Collections.unmodifiableList(resAddresses);
     }
 
     public void add(Address address) {
         this.addresses.add(address);
     }
 
-    public void delete(String condition) {
-        if (condition.equals("name"))this.deleteByName(condition);
-        else if (condition.equals("mobile")) this.deleteByMobile(condition);
-        else if (condition.equals("address")) this.deleteByAddr(condition);
+    public int delete(String condition,String value) {
 
-    }
-
-    private void deleteByName(String name) {
-        List<Address> removeAddresses = new LinkedList<Address>();
-        for (Address addr : addresses) {
-            String reg = name;
-            Pattern pattern = Pattern.compile(reg);
-            if (addr.getName().matches(reg)) {
-                removeAddresses.add(addr);
+        int count = 0;
+        Iterator<Address> addressIterator = addresses.iterator();
+        while (addressIterator.hasNext()) {
+            try {
+                Address curAddress = addressIterator.next();
+                String propertyVal = BeanUtils.getProperty(curAddress, condition);
+                if (propertyVal.matches(value)) {
+                    addressIterator.remove();
+                    ++count;
+                }
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
             }
-        }
-        addresses.removeAll(removeAddresses);
-    }
-
-    private void deleteByMobile(String mobile) {
-        List<Address> removeAddresses = new LinkedList<Address>();
-        for (Address addr : addresses) {
-            removeAddresses.add(addr);
-        }
-        addresses.removeAll(removeAddresses);
-    }
-
-    private void deleteByAddr(String address) {
-        List<Address> removeAddresses = new LinkedList<Address>();
-        for (Address addr : addresses) {
-            removeAddresses.add(addr);
 
         }
-        addresses.removeAll(removeAddresses);
+        return count;
     }
 
     public void save() {
