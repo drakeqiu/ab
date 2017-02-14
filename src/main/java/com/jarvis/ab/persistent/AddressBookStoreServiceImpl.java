@@ -17,6 +17,8 @@ import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by jarvis on 11/02/2017.
@@ -53,8 +55,20 @@ public class AddressBookStoreServiceImpl implements AddressBookStoreService{
         try {
             builder = factory.newDocumentBuilder();
             this.document = builder.newDocument();
-            String fullAddressBookPath = this.getClass().getResource("/").getFile() + ADDRESSES;
-            File file = new File(fullAddressBookPath);
+            URL url = this.getClass().getResource("/");
+            String fullPath = null;
+            if (url == null) {
+                String loc = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+                String regEx = "(/.*)*/.*";
+                Pattern pattern = Pattern.compile(regEx);
+                Matcher matcher = pattern.matcher(loc);
+                if (matcher.matches()) {
+                    fullPath = matcher.group(1) + File.separator + ADDRESSES;
+                }
+            } else {
+                fullPath = url.getFile() + ADDRESSES;
+            }
+            File file = new File(fullPath);
 
             // save dom
             Element root = document.createElement("Addresses");
@@ -95,7 +109,18 @@ public class AddressBookStoreServiceImpl implements AddressBookStoreService{
     public List<Address> load() {
         ArrayList<Address> addresses = new ArrayList<Address>();
         URL url = this.getClass().getResource("/");
-        String fullPath = url.getFile() + ADDRESSES;
+        String fullPath = null;
+        if (url == null) {
+            String loc = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+            String regEx = "(/.*)*/.*";
+            Pattern pattern = Pattern.compile(regEx);
+            Matcher matcher = pattern.matcher(loc);
+            if (matcher.matches()) {
+                fullPath = matcher.group(1) + File.separator + ADDRESSES;
+            }
+        } else {
+            fullPath = url.getFile() + ADDRESSES;
+        }
         File file = new File(fullPath);
         if (!file.exists()) {
             this.save(addresses);

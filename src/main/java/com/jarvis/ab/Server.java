@@ -1,9 +1,14 @@
 package com.jarvis.ab;
 
+import com.jarvis.ab.command.QuitCommand;
 import com.jarvis.ab.def.Constants;
 import com.jarvis.ab.entity.Address;
 import com.jarvis.ab.exception.EmptyCommandException;
-import com.jarvis.ab.service.CommandService;
+import com.jarvis.ab.exception.NoCommandException;
+import com.jarvis.ab.persistent.AddressBookStoreServiceImpl;
+import com.jarvis.ab.service.AddressService;
+import com.jarvis.ab.service.BaseService;
+import com.jarvis.ab.command.BaseCommand;
 import com.jarvis.ab.utils.ServerUtils;
 
 import java.util.*;
@@ -14,11 +19,12 @@ import java.util.concurrent.Executors;
  * Created by jarvis on 09/02/2017.
  */
 public final class Server {
-    private static volatile Server  INSTANCE;
+    private static volatile Server INSTANCE;
     private ExecutorService pool;
     private Scanner scanner;
     private Map<String,Class> commandMap;
     private List<Address> addressList;
+    private BaseService<Address> addressService;
 
     public static Server getINSTANCE() {
         synchronized (Server.class) {
@@ -40,8 +46,11 @@ public final class Server {
     public void initialize() {
         pool = Executors.newSingleThreadExecutor();
         scanner = new Scanner(System.in);
+        addressService = AddressService.getInstance();
         commandMap = ServerUtils.loadCommandMap();
-        addressList = new ArrayList<Address>();
+        addressService.setAddressBookStoreService(AddressBookStoreServiceImpl.getInstance());
+        addressService.load();
+        addressList = addressService.findAll();
 
     }
 
@@ -51,14 +60,18 @@ public final class Server {
             String command = scanner.nextLine();
 
             try {
-                CommandService commandService = null;
-                commandService = parse(command);
-                pool.submit(commandService);
+                BaseCommand baseCommand = null;
+                baseCommand = parse(command);
+                if (baseCommand instanceof QuitCommand) break;
+                pool.submit(baseCommand);
             } catch (EmptyCommandException e) {
 //                e.printStackTrace();
+            } catch (NoCommandException e) {
+
             }
 
         }
+        addressService.save();
     }
 
     public void showPrompt() {
@@ -66,15 +79,17 @@ public final class Server {
         System.out.flush();
     }
 
-    public CommandService parse(String command) throws EmptyCommandException {
+    public BaseCommand parse(String command) throws EmptyCommandException, NoCommandException {
         // an empty command entered
         if (command == null || "".equals(command.trim())) {
             throw new EmptyCommandException("empty command.");
         }
         Class clazz = commandMap.get(command.trim());
-
+        if (clazz == null) {
+            throw new NoCommandException("no such command exists.");
+        }
         try {
-            return (CommandService) clazz.newInstance();
+            return (BaseCommand) clazz.newInstance();
         } catch (InstantiationException e) {
             // e.printStackTrace();
         } catch (IllegalAccessException e) {

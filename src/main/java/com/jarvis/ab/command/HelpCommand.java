@@ -1,9 +1,11 @@
-package com.jarvis.ab.service;
+package com.jarvis.ab.command;
+
+import com.jarvis.ab.service.BaseService;
 
 /**
  * Created by jarvis on 10/02/2017.
  */
-public class HelpCommand implements CommandService {
+public class HelpCommand extends BaseCommand {
     /**
      * When an object implementing interface <code>Runnable</code> is used
      * to create a thread, starting the thread causes the object's
@@ -24,4 +26,12 @@ public class HelpCommand implements CommandService {
         System.out.println("\t!help: get help");
         System.out.flush();
     }
+
+    public static BaseCommand  getInstance(BaseService baseService) {
+        HelpCommand instance = new HelpCommand();
+        instance.baseService = baseService;
+        return instance;
+    }
+
+    private HelpCommand(){}
 }

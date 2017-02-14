@@ -1,5 +1,8 @@
 package com.jarvis.ab.service;
 
+import com.jarvis.ab.entity.Address;
+import com.jarvis.ab.persistent.AddressBookStoreService;
+
 import java.util.List;
 
 /**
@@ -38,4 +41,16 @@ public interface BaseService<T> {
      * load list from local file to memory.
      */
     public void load();
+
+    /**
+     *
+     * @param addressBookStoreService
+     */
+    public void setAddressBookStoreService(AddressBookStoreService addressBookStoreService);
+
+    /**
+     *
+     * @return
+     */
+    public List<T> findAll();
 }
