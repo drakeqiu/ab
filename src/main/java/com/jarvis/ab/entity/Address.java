@@ -32,4 +32,13 @@ public class Address {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "address='" + address + '\'' +
+                ", name='" + name + '\'' +
+                ", mobile='" + mobile + '\'' +
+                '}';
+    }
 }

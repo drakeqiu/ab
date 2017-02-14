@@ -22,7 +22,7 @@ public class FindCommand extends BaseCommand{
 
     }
 
-    public static BaseCommand  getInstance(BaseService baseService) {
+    public static FindCommand  getInstance(BaseService baseService) {
         FindCommand instance = new FindCommand();
         instance.baseService = baseService;
         return instance;

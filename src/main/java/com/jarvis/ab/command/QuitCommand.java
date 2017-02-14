@@ -23,7 +23,7 @@ public class QuitCommand extends BaseCommand {
 
     }
 
-    public static BaseCommand  getInstance(BaseService baseService) {
+    public static QuitCommand  getInstance(BaseService baseService) {
         QuitCommand instance = new QuitCommand();
         instance.baseService = baseService;
         return instance;

@@ -19,7 +19,6 @@ public class AddressService implements BaseService<Address>{
 
     private List<Address> addresses;
 
-    @Override
     public void setAddressBookStoreService(AddressBookStoreService addressBookStoreService) {
         this.addressBookStoreService = addressBookStoreService;
     }
@@ -27,12 +26,10 @@ public class AddressService implements BaseService<Address>{
     /**
      * @return
      */
-    @Override
     public List<Address> findAll() {
         return Collections.unmodifiableList(this.addresses);
     }
 
-    @Override
     public List<Address> search(String condition, String value) {
         Iterator<Address> addressIterator = this.addresses.iterator();
         List<Address> resAddresses = new LinkedList<Address>();
@@ -55,12 +52,10 @@ public class AddressService implements BaseService<Address>{
         return Collections.unmodifiableList(resAddresses);
     }
 
-    @Override
     public void add(Address address) {
         this.addresses.add(address);
     }
 
-    @Override
     public int delete(String condition,String value) {
 
         int count = 0;
@@ -85,12 +80,10 @@ public class AddressService implements BaseService<Address>{
         return count;
     }
 
-    @Override
     public void save() {
         this.addressBookStoreService.save(addresses);
     }
 
-    @Override
     public void load() {
         this.addresses = this.addressBookStoreService.load();
     }

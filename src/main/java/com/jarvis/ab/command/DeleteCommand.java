@@ -22,7 +22,7 @@ public class DeleteCommand extends BaseCommand {
 
     }
 
-    public static BaseCommand  getInstance(BaseService baseService) {
+    public static DeleteCommand  getInstance(BaseService baseService) {
         DeleteCommand instance = new DeleteCommand();
         instance.baseService = baseService;
         return instance;

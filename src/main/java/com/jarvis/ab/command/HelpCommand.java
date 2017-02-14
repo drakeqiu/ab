@@ -17,6 +17,7 @@ public class HelpCommand extends BaseCommand {
      *
      * @see Thread#run()
      */
+    @Override
     public void run() {
         System.out.println("This is a small application for a address book.");
         System.out.println("It support following commands:");
@@ -27,7 +28,7 @@ public class HelpCommand extends BaseCommand {
         System.out.flush();
     }
 
-    public static BaseCommand  getInstance(BaseService baseService) {
+    public static HelpCommand  getInstance(BaseService baseService) {
         HelpCommand instance = new HelpCommand();
         instance.baseService = baseService;
         return instance;

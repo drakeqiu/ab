@@ -47,6 +47,7 @@ public class AddressBookStoreServiceImpl implements AddressBookStoreService{
         DocumentBuilder builder;
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        transformerFactory.setAttribute("indent-number", new Integer(4));
         Transformer transformer;
         PrintWriter printWriter;
         StreamResult result;
@@ -145,13 +146,13 @@ public class AddressBookStoreServiceImpl implements AddressBookStoreService{
                     for (int j = 0; j < attrNodes.getLength(); ++ j) {
                         Node attr = attrNodes.item(j);
                         if (attr != null && attr.getNodeType() == Node.ELEMENT_NODE && attr.getNodeName().equals("name")) {
-                            address.setName(attr.getNodeValue());
+                            address.setName(attr.getTextContent());
                         }
                         if (attr != null && attr.getNodeType() == Node.ELEMENT_NODE && attr.getNodeName().equals("mobile")) {
-                            address.setMobile(attr.getNodeValue());
+                            address.setMobile(attr.getTextContent());
                         }
                         if (attr != null && attr.getNodeType() == Node.ELEMENT_NODE && attr.getNodeName().equals("address")) {
-                            address.setAddress(attr.getNodeValue());
+                            address.setAddress(attr.getTextContent());
                         }
                     }
                     addresses.add(address);
