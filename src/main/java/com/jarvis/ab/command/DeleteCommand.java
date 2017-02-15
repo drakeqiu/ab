@@ -1,10 +1,8 @@
 package com.jarvis.ab.command;
 
-import com.jarvis.ab.entity.Address;
 import com.jarvis.ab.service.BaseService;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
