@@ -23,7 +23,7 @@ public class ServerUtils {
         commandMap.put(Constants.HELPCOMMAND,HelpCommand.getInstance(baseService));
         commandMap.put(Constants.QUITCOMMAND, QuitCommand.getInstance(baseService));
         commandMap.put(Constants.DELETECOMMAND, DeleteCommand.getInstance(baseService));
-        commandMap.put(Constants.FINDCOMMAND, FindCommand.getInstance(baseService));
+        commandMap.put(Constants.SEARCHCOMMAND, SearchCommand.getInstance(baseService));
         commandMap.put(Constants.ADDCOMMAND, AddCommand.getInstance(baseService));
 
         return commandMap;
