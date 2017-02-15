@@ -21,10 +21,11 @@ public class HelpCommand extends BaseCommand {
     public void run() {
         System.out.println("This is a small application for a address book.");
         System.out.println("It support following commands:");
-        System.out.println("\tadd: use add command to add new address entry.");
-        System.out.println("\tsearch: use search command to get one or more address entries.");
-        System.out.println("\tremove: use remove command to remove one or more address entries.");
-        System.out.println("\t!help: get help");
+        System.out.println();
+        System.out.println("add: use add command to add new address entry.");
+        System.out.println("search: use search command to get one or more address entries.");
+        System.out.println("remove: use remove command to remove one or more address entries.");
+        System.out.println("!help: get help");
         System.out.flush();
     }
 
