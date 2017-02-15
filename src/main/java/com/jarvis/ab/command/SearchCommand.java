@@ -3,8 +3,7 @@ package com.jarvis.ab.command;
 import com.jarvis.ab.entity.Address;
 import com.jarvis.ab.service.BaseService;
 
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Created by qiu.yuan on 2017/2/14.
@@ -26,13 +25,18 @@ public class SearchCommand extends BaseCommand{
         Scanner scanner = new Scanner(System.in);
         String condition;
         String value;
-        System.out.print("by (name|mobile|address):");
-        System.out.flush();
-        condition = scanner.nextLine();
+        while (true) {
+            System.out.print("by (name|mobile|address):");
+            System.out.flush();
+            condition = scanner.nextLine();
+            if (condition!=null && this.conditionSet.contains(condition.trim())) break;
+        }
+
         System.out.print(condition + ":");
         value = scanner.nextLine();
         List<Address> addresses = baseService.search(condition,value);
         for (Address address: addresses) {
+            System.out.println();
             System.out.println("name:" + address.getName());
             System.out.println("mobile: " + address.getMobile());
             System.out.println("address: " + address.getAddress());
@@ -46,5 +50,14 @@ public class SearchCommand extends BaseCommand{
         return instance;
     }
 
-    private SearchCommand(){}
+    private final Set<String> conditionSet;
+    private SearchCommand(){
+        this.conditionSet = new HashSet<String>();
+        this.conditionSet.add(NAMECONDITION);
+        this.conditionSet.add(MOBILECONDITION);
+        this.conditionSet.add(ADDRESSCONDITION);
+    }
+    private final static String NAMECONDITION = "name";
+    private final static String MOBILECONDITION = "mobile";
+    private final static String ADDRESSCONDITION = "address";
 }

@@ -18,7 +18,7 @@ public class ServerUtils {
      * @return
      */
     public static Map<String,BaseCommand> loadCommandMap(BaseService baseService) {
-        Map<String,BaseCommand> commandMap = new HashMap<String, BaseCommand>();
+        Map<String,BaseCommand> commandMap = new HashMap<>();
 
         commandMap.put(Constants.HELPCOMMAND,HelpCommand.getInstance(baseService));
         commandMap.put(Constants.QUITCOMMAND, QuitCommand.getInstance(baseService));
